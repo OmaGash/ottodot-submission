@@ -1,7 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { MathProblem, MathProblemOptions, MathProblemResponse } from "./types";
+import {
+  MathAnswerResponse,
+  MathProblem,
+  MathProblemOptions,
+  MathProblemResponse,
+} from "./types";
 
 export default function Home() {
   const [problem, setProblem] = useState<MathProblem | null>(null);
@@ -37,6 +42,16 @@ export default function Home() {
     // TODO: Implement answer submission logic
     // This should call your API route to check the answer,
     // save the submission, and generate feedback
+    const response = await fetch("/api/math-problem/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ session_id: sessionId, answer_text: userAnswer }),
+    });
+    const parsedResponse: MathAnswerResponse = await response.json();
+    setIsCorrect(parsedResponse.correct);
+    setFeedback(parsedResponse.feedback);
   };
 
   return (

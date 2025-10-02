@@ -11,6 +11,17 @@ export interface MathProblemResponse {
   created_at: string;
 }
 
+export interface MathAnswer {
+  session_id: string;
+  answer_text: number;
+}
+
+export interface MathAnswerResponse {
+  answer: MathAnswer;
+  correct: boolean;
+  feedback: string;
+}
+
 export interface MathProblemOptions {
   difficulty?: Difficulty;
 }
