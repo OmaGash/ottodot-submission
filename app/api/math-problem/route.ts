@@ -1,5 +1,10 @@
 import { GoogleGenAI } from "@google/genai";
-import { Difficulty, MathProblem, MathProblemOptions } from "../../types";
+import {
+  Difficulty,
+  MathProblem,
+  MathProblemOptions,
+  MathProblemResponse,
+} from "../../types";
 import { supabase } from "../../../lib/supabaseClient";
 
 async function submit_question(Problem: MathProblem) {
@@ -14,9 +19,9 @@ async function submit_question(Problem: MathProblem) {
         },
       ])
       .select();
-    console.log(data, error);
+    // console.log(data[0], error);
     if (error) throw error;
-    return data;
+    return data[0];
   } catch (err) {
     return err;
   }
@@ -55,14 +60,22 @@ Guidelines: - "problem_text" should be a single word problem.
 `;
 
     const ai = new GoogleGenAI({});
-    const response = await ai.models.generateContent({
+    const problem_raw = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: system_prompt,
     });
+    const problem: MathProblem = JSON.parse(problem_raw.text);
 
-    submit_question(JSON.parse(response.text));
+    const { id, created_at } = await submit_question(problem);
 
-    return new Response(response.text);
+    // console.log(id, created_at);
+
+    const problem_response: MathProblemResponse = {
+      problem: problem,
+      session_id: id,
+      created_at: created_at,
+    };
+    return new Response(JSON.stringify(problem_response), { status: 200 });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unexpected error";
 

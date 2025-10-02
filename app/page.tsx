@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MathProblem, MathProblemOptions } from "./types";
+import { MathProblem, MathProblemOptions, MathProblemResponse } from "./types";
 
 export default function Home() {
   const [problem, setProblem] = useState<MathProblem | null>(null);
@@ -25,8 +25,10 @@ export default function Home() {
       },
       body: JSON.stringify(options),
     });
-    const parsedResponse: MathProblem = await response.json();
-    setProblem(parsedResponse);
+    const parsedResponse: MathProblemResponse = await response.json();
+    setProblem(parsedResponse.problem);
+    setSessionId(parsedResponse.session_id);
+    // console.log(sessionId);
     setIsLoading(false);
   };
 
