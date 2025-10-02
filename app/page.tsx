@@ -19,6 +19,7 @@ export default function Home() {
     // TODO: Implement problem generation logic
     // This should call your API route to generate a new problem
     // and save it to the database
+    fetch("/api/math-problem?diff=hard").then((res) => console.log(res));
   };
 
   const submitAnswer = async (e: React.FormEvent) => {
