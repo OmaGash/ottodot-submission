@@ -51,7 +51,8 @@ The current problem has a difficulty of ${difficulty}.
 
 Output format must always be valid JSON with the following structure: 
 { "problem_text": "A bakery sold 45 cupcakes in the morning and 30 in the afternoon. If they baked 90 cupcakes in total, how many are left?", "final_answer": 15 } 
-Guidelines: - "problem_text" should be a single word problem. 
+Guidelines:
+- "problem_text" should be a single word problem. 
 - "final_answer" should be the exact numerical answer (float or integer). 
 - Do not include explanations or steps in the JSON. 
 - Ensure the numbers are reasonable and solvable without calculators. 
