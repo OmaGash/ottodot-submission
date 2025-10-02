@@ -17,6 +17,7 @@ export default function Home() {
     // TODO: Implement problem generation logic
     // This should call your API route to generate a new problem
     // and save it to the database
+    setIsLoading(true);
     const response = await fetch("/api/math-problem", {
       method: "POST",
       headers: {
@@ -24,11 +25,9 @@ export default function Home() {
       },
       body: JSON.stringify(options),
     });
-    const parsedResponse = await response.json();
-    // const { data, error } = await supabase
-    //   .from("math_problem_sessions")
-    //   .insert([parsedResponse])
-    //   .select();
+    const parsedResponse: MathProblem = await response.json();
+    setProblem(parsedResponse);
+    setIsLoading(false);
   };
 
   const submitAnswer = async (e: React.FormEvent) => {
