@@ -1,16 +1,39 @@
 import { GoogleGenAI } from "@google/genai";
-import { NextRequest } from "next/server";
+import { Difficulty, MathProblem, MathProblemOptions } from "../../types";
+import { supabase } from "../../../lib/supabaseClient";
 
-type Difficulty = "easy" | "medium" | "hard";
-
-
-export async function GET(req: NextRequest) {
+async function submit_question(Problem: MathProblem) {
   try {
-    const { searchParams } = new URL(req.url);
-    const difficulty: Difficulty = (searchParams.get("diff") || "easy") as Difficulty;
+    const { problem_text, final_answer } = Problem;
+    const { data, error } = await supabase
+      .from("math_problem_sessions")
+      .insert([
+        {
+          problem_text: problem_text,
+          correct_answer: final_answer,
+        },
+      ])
+      .select();
+    console.log(data, error);
+    if (error) throw error;
+    return data;
+  } catch (err) {
+    return err;
+  }
+}
 
-    const system_prompt =
-      `
+export async function POST(Req: Request) {
+  try {
+    const body: MathProblemOptions = await Req.json();
+
+    // return new Response(JSON.stringify({ message: "Test response", data: body }), {
+    //   status: 200,
+    //   headers: { "Content-Type": "application/json" },
+    // });
+
+    const difficulty: Difficulty = (body.difficulty || "easy") as Difficulty;
+
+    const system_prompt = `
 You are a math problem generator for Primary 5 students (around 10–11 years old). 
 Generate word problems that involve realistic everyday scenarios such as shopping, sharing, time, distance, or measurements. 
 The problems should be clear, age-appropriate, and require arithmetic operations (addition, subtraction, multiplication, division), but not advanced algebra. 
@@ -28,6 +51,7 @@ Guidelines: - "problem_text" should be a single word problem.
 - Do not include explanations or steps in the JSON. 
 - Ensure the numbers are reasonable and solvable without calculators. 
 - Only return the JSON object, nothing else. 
+- Do not include Markdown formatting.
 `;
 
     const ai = new GoogleGenAI({});
@@ -36,7 +60,8 @@ Guidelines: - "problem_text" should be a single word problem.
       contents: system_prompt,
     });
 
-    console.log(response.text);
+    submit_question(JSON.parse(response.text));
+
     return new Response(response.text);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unexpected error";

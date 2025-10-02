@@ -1,11 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
-interface MathProblem {
-  problem_text: string;
-  final_answer: number;
-}
+import { MathProblem, MathProblemOptions } from "./types";
 
 export default function Home() {
   const [problem, setProblem] = useState<MathProblem | null>(null);
@@ -15,11 +11,24 @@ export default function Home() {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
-  const generateProblem = async () => {
+  const generateProblem = async (
+    options: MathProblemOptions = { difficulty: "easy" }
+  ) => {
     // TODO: Implement problem generation logic
     // This should call your API route to generate a new problem
     // and save it to the database
-    fetch("/api/math-problem?diff=hard").then((res) => console.log(res));
+    const response = await fetch("/api/math-problem", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(options),
+    });
+    const parsedResponse = await response.json();
+    // const { data, error } = await supabase
+    //   .from("math_problem_sessions")
+    //   .insert([parsedResponse])
+    //   .select();
   };
 
   const submitAnswer = async (e: React.FormEvent) => {
@@ -38,7 +47,7 @@ export default function Home() {
 
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
           <button
-            onClick={generateProblem}
+            onClick={() => generateProblem()}
             disabled={isLoading}
             className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-3 px-4 rounded-lg transition duration-200 ease-in-out transform hover:scale-105"
           >
