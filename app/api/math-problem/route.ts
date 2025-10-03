@@ -71,7 +71,7 @@ Guidelines:
 - Do not include Markdown formatting.
 - Do not include any step-by-step solutions and final answer in the hint.
 `;
-    console.log(system_prompt);
+    // console.log(system_prompt);
     const ai = new GoogleGenAI({});
     const problem_raw = await ai.models.generateContent({
       model: "gemini-2.5-flash",

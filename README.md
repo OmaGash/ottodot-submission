@@ -105,13 +105,13 @@ Create a new API route that handles:
 
 ### 3. Requirements Checklist
 
-- [ ] AI generates appropriate Primary 5 level math problems
-- [ ] Problems and answers are saved to Supabase
-- [ ] User submissions are saved with feedback
-- [ ] AI generates helpful, personalized feedback
-- [ ] UI is clean and mobile-responsive
-- [ ] Error handling for API failures
-- [ ] Loading states during API calls
+- [x] AI generates appropriate Primary 5 level math problems
+- [x] Problems and answers are saved to Supabase
+- [x] User submissions are saved with feedback
+- [x] AI generates helpful, personalized feedback
+- [x] UI is clean and mobile-responsive
+- [x] Error handling for API failures
+- [x] Loading states during API calls
 
 ## Deployment
 
@@ -126,12 +126,13 @@ Create a new API route that handles:
 
 When submitting your assessment, provide:
 
-1. **GitHub Repository URL**: Make sure it's public
-2. **Live Demo URL**: Your Vercel deployment
+1. **GitHub Repository URL**: https://github.com/OmaGash/ottodot-submission
+2. **Live Demo URL**: https://ottodot-submission-lilac.vercel.app/
 3. **Supabase Credentials**: Add these to your README for testing:
+> The following are **no longer valid**, please refer to the email for the updated secrets.
    ```
-   SUPABASE_URL: [Your Supabase Project URL]
-   SUPABASE_ANON_KEY: [Your Supabase Anon Key]
+   SUPABASE_URL: https://hezrrbjgnprdrexwajjm.supabase.co
+   SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhlenJyYmpnbnByZHJleHdhamptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzNjQ3NzAsImV4cCI6MjA3NDk0MDc3MH0.sSkvXzVFp8CC43Vxlu5Ep9lokbyhAGPJJpeQuhQRZ30
    ```
 
 ## Implementation Notes
@@ -140,20 +141,19 @@ When submitting your assessment, provide:
 
 ### My Implementation:
 
-- 
-- 
-- 
+- Starter kit was using an outdated Google generative AI package, I couldn't find any readily available documentation for that specific version so I replaced it with the latest package supported by Google.
+- Tailwind was broken, all elements were deprived of styling. Updating Next.js to 14.2.5 fixed the issue.
 
 ## Additional Features (Optional)
 
 If you have time, consider adding:
 
-- [ ] Difficulty levels (Easy/Medium/Hard)
+- [x] Difficulty levels (Easy/Medium/Hard)
 - [ ] Problem history view
 - [ ] Score tracking
-- [ ] Different problem types (addition, subtraction, multiplication, division)
-- [ ] Hints system
-- [ ] Step-by-step solution explanations
+- [x] Different problem types (addition, subtraction, multiplication, division)
+- [x] Hints system
+- [x] Step-by-step solution explanations
 
 ---
 
