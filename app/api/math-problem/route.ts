@@ -56,7 +56,12 @@ ${
     : `The arithmetic operation for this problem should be ${arithType}.`
 }
 Output format must always be valid JSON with the following structure: 
-{ "problem_text": "A bakery sold 45 cupcakes in the morning and 30 in the afternoon. If they baked 90 cupcakes in total, how many are left?", "final_answer": 15 } 
+{
+  "problem_text": "A bakery sold 45 cupcakes in the morning and 30 in the afternoon. If they baked 90 cupcakes in total, how many are left?",
+  "final_answer": 15,
+  "solution": "The bakery baked 90 cupcakes, sold 45 in the morning and 30 in the afternoon (45 + 30 = 75), so 90 - 75 = 15 cupcakes are left."
+  "hint": Add the number of cupcakes sold in the morning and afternoon, then subtract that total from the number of cupcakes baked.
+} 
 Guidelines:
 - "problem_text" should be a single word problem. 
 - "final_answer" should be the exact numerical answer (float or integer). 

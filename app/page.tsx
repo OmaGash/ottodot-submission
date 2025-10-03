@@ -10,11 +10,15 @@ import {
   MathProblemResponse,
 } from "./types";
 import MathOption from "./components/MathOption";
+import Timer from "./components/Timer";
+import { truncateSync } from "node:fs";
 
 export default function Home() {
+  const [showHint, setShowHint] = useState<boolean>(false);
   const [difficulty, setDifficulty] = useState<Difficulty>("easy");
   const [problemType, setProblemType] = useState<ArithmeticType>("any");
   const [problem, setProblem] = useState<MathProblem | null>(null);
+  const [solution, setSolution] = useState("");
   const [userAnswer, setUserAnswer] = useState("");
   const [feedback, setFeedback] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -36,9 +40,9 @@ export default function Home() {
       body: JSON.stringify(options),
     });
     const parsedResponse: MathProblemResponse = await response.json();
+    setShowHint(false);
     setProblem(parsedResponse.problem);
     setSessionId(parsedResponse.session_id);
-    // console.log(sessionId);
     setIsLoading(false);
   };
 
@@ -114,6 +118,14 @@ export default function Home() {
             </h2>
             <p className="text-lg text-gray-800 leading-relaxed mb-6">
               {problem.problem_text}
+
+              <blockquote
+                id="hint-element"
+                className="text-base text-gray-800 leading-relaxed mb-6 border-l-4 border-gray-300 pl-4 italic bg-blue-100"
+                hidden={!showHint}
+              >
+                <p>Hint: {problem.hint}</p>
+              </blockquote>
             </p>
 
             <form onSubmit={submitAnswer} className="space-y-4">
@@ -134,7 +146,17 @@ export default function Home() {
                   required
                 />
               </div>
-
+              <button
+                type="button"
+                disabled={isLoading}
+                onClick={() => {
+                  setShowHint(true);
+                }}
+                className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-3 px-4 rounded-lg transition duration-200 ease-in-out transform hover:scale-105"
+              >
+                Hint
+                {/* <Timer /> */}
+              </button>
               <button
                 type="submit"
                 disabled={!userAnswer || isLoading}

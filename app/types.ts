@@ -10,6 +10,8 @@ export type ArithmeticType =
 export interface MathProblem {
   problem_text: string;
   final_answer: number;
+  hint: string;
+  solution: string;
 }
 
 export interface MathProblemResponse {
