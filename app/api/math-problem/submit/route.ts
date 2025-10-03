@@ -1,6 +1,37 @@
 import { GoogleGenAI } from "@google/genai";
 import { supabase } from "../../../../lib/supabaseClient";
-import { MathAnswer, MathAnswerResponse } from "../../../types";
+import { MathAnswer, MathAnswerResponse, MathSubmission } from "../../../types";
+
+// interface MathSubmission {
+//   session_id: string;
+//   user_answer: number;
+//   is_correct: boolean;
+//   feedback_text: string;
+// }
+
+async function submit_answer({
+  session_id,
+  user_answer,
+  is_correct,
+  feedback_text,
+}: MathSubmission) {
+  try {
+    const { data, error } = await supabase
+      .from("math_problem_submissions")
+      .insert([
+        {
+          session_id: session_id,
+          user_answer: user_answer,
+          is_correct: is_correct,
+          feedback_text: feedback_text,
+        },
+      ])
+      .select();
+    return new Response(JSON.stringify(data), { status: 200 });
+  } catch ({ message }) {
+    return new Response(message, { status: 500 });
+  }
+}
 
 async function checkAnswer({ answer_text: answer, session_id }: MathAnswer) {
   try {
@@ -13,8 +44,8 @@ async function checkAnswer({ answer_text: answer, session_id }: MathAnswer) {
     const response = { problem: data.problem_text, correct: result };
     // console.log(data.correct_answer, answer, result);
     return new Response(JSON.stringify(response), { status: 200 });
-  } catch (err) {
-    return err;
+  } catch ({ message }) {
+    return new Response(message, { status: 500 });
   }
 }
 
@@ -73,6 +104,15 @@ export async function POST(Req: Request) {
       correct: result.correct,
       feedback: feedback,
     };
+
+    // console.log(
+    await submit_answer({
+      session_id: body.session_id,
+      user_answer: body.answer_text,
+      is_correct: result.correct,
+      feedback_text: feedback,
+    }).then((res) => res.json());
+    // );
 
     return new Response(JSON.stringify(response), { status: 200 });
   } catch (err) {

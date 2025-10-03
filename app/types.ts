@@ -11,6 +11,10 @@ export interface MathProblemResponse {
   created_at: string;
 }
 
+export interface MathProblemOptions {
+  difficulty?: Difficulty;
+}
+
 export interface MathAnswer {
   session_id: string;
   answer_text: number;
@@ -22,6 +26,9 @@ export interface MathAnswerResponse {
   feedback: string;
 }
 
-export interface MathProblemOptions {
-  difficulty?: Difficulty;
+export interface MathSubmission {
+  session_id: string;
+  user_answer: number;
+  is_correct: boolean;
+  feedback_text: string;
 }
