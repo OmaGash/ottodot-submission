@@ -2,15 +2,18 @@
 
 import { useState } from "react";
 import {
+  ArithmeticType,
   Difficulty,
   MathAnswerResponse,
   MathProblem,
   MathProblemOptions,
   MathProblemResponse,
 } from "./types";
+import MathOption from "./components/MathOption";
 
 export default function Home() {
   const [difficulty, setDifficulty] = useState<Difficulty>("easy");
+  const [problemType, setProblemType] = useState<ArithmeticType>("any");
   const [problem, setProblem] = useState<MathProblem | null>(null);
   const [userAnswer, setUserAnswer] = useState("");
   const [feedback, setFeedback] = useState("");
@@ -19,7 +22,7 @@ export default function Home() {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
   const generateProblem = async (
-    options: MathProblemOptions = { difficulty: "easy" }
+    options: MathProblemOptions = { difficulty: "easy", type: "any" }
   ) => {
     // TODO: Implement problem generation logic
     // This should call your API route to generate a new problem
@@ -66,29 +69,35 @@ export default function Home() {
         </h1>
 
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <div className="mb-4">
-            <label
-              htmlFor="difficulty"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Select Difficulty:
-            </label>
-            <select
-              id="difficulty"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              defaultValue="easy"
-              disabled={isLoading}
-              onChange={(e) => setDifficulty(e.target.value as Difficulty)}
-            >
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-            </select>
-          </div>
+          <MathOption
+            propValue={difficulty}
+            propSetter={setDifficulty}
+            title="difficulty"
+            isLoading={isLoading}
+            options={[
+              { value: "easy", label: "Easy" },
+              { value: "medium", label: "Medium" },
+              { value: "hard", label: "Hard" },
+            ]}
+          />
+          <MathOption
+            propValue={problemType}
+            propSetter={setProblemType}
+            title="arithmetic operation"
+            isLoading={isLoading}
+            options={[
+              { value: "any", label: "Any" },
+              { value: "addition", label: "Addition" },
+              { value: "subtraction", label: "Subtraction" },
+              { value: "multiplication", label: "Multiplication" },
+              { value: "division", label: "Division" },
+            ]}
+          />
           <button
             onClick={() =>
               generateProblem({
                 difficulty: difficulty,
+                type: problemType,
               })
             }
             disabled={isLoading}

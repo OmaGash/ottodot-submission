@@ -1,5 +1,12 @@
 export type Difficulty = "easy" | "medium" | "hard";
 
+export type ArithmeticType =
+  | "any"
+  | "addition"
+  | "subtraction"
+  | "multiplication"
+  | "division";
+
 export interface MathProblem {
   problem_text: string;
   final_answer: number;
@@ -13,6 +20,7 @@ export interface MathProblemResponse {
 
 export interface MathProblemOptions {
   difficulty?: Difficulty;
+  type?: ArithmeticType;
 }
 
 export interface MathAnswer {

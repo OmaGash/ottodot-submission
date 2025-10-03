@@ -1,5 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import {
+  ArithmeticType,
   Difficulty,
   MathProblem,
   MathProblemOptions,
@@ -37,6 +38,7 @@ export async function POST(Req: Request) {
     // });
 
     const difficulty: Difficulty = (body.difficulty || "easy") as Difficulty;
+    const arithType: ArithmeticType = (body.type || "any") as ArithmeticType;
 
     const system_prompt = `
 You are a math problem generator for Primary 5 students (around 10–11 years old). 
@@ -48,7 +50,11 @@ Medium should involve larger numbers or two-step operations.
 Hard should involve multi-step reasoning but still solvable with arithmetic (no algebra).
 
 The current problem has a difficulty of ${difficulty}. 
-
+${
+  arithType === "any"
+    ? ""
+    : `The arithmetic operation for this problem should be ${arithType}.`
+}
 Output format must always be valid JSON with the following structure: 
 { "problem_text": "A bakery sold 45 cupcakes in the morning and 30 in the afternoon. If they baked 90 cupcakes in total, how many are left?", "final_answer": 15 } 
 Guidelines:
@@ -59,7 +65,7 @@ Guidelines:
 - Only return the JSON object, nothing else. 
 - Do not include Markdown formatting.
 `;
-
+    console.log(system_prompt);
     const ai = new GoogleGenAI({});
     const problem_raw = await ai.models.generateContent({
       model: "gemini-2.5-flash",
