@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import {
+  Difficulty,
   MathAnswerResponse,
   MathProblem,
   MathProblemOptions,
@@ -9,6 +10,7 @@ import {
 } from "./types";
 
 export default function Home() {
+  const [difficulty, setDifficulty] = useState<Difficulty>("easy");
   const [problem, setProblem] = useState<MathProblem | null>(null);
   const [userAnswer, setUserAnswer] = useState("");
   const [feedback, setFeedback] = useState("");
@@ -64,8 +66,31 @@ export default function Home() {
         </h1>
 
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+          <div className="mb-4">
+            <label
+              htmlFor="difficulty"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Select Difficulty:
+            </label>
+            <select
+              id="difficulty"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              defaultValue="easy"
+              disabled={isLoading}
+              onChange={(e) => setDifficulty(e.target.value as Difficulty)}
+            >
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </div>
           <button
-            onClick={() => generateProblem()}
+            onClick={() =>
+              generateProblem({
+                difficulty: difficulty,
+              })
+            }
             disabled={isLoading}
             className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-3 px-4 rounded-lg transition duration-200 ease-in-out transform hover:scale-105"
           >
