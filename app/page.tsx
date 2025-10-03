@@ -153,6 +153,7 @@ export default function Home() {
                   setShowHint(true);
                 }}
                 className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-3 px-4 rounded-lg transition duration-200 ease-in-out transform hover:scale-105"
+                hidden={showHint}
               >
                 Hint
                 {/* <Timer /> */}
