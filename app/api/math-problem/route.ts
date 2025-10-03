@@ -69,6 +69,7 @@ Guidelines:
 - Ensure the numbers are reasonable and solvable without calculators. 
 - Only return the JSON object, nothing else. 
 - Do not include Markdown formatting.
+- Do not include any step-by-step solutions and final answer in the hint.
 `;
     console.log(system_prompt);
     const ai = new GoogleGenAI({});
