@@ -42,6 +42,7 @@ export default function Home() {
     const parsedResponse: MathProblemResponse = await response.json();
     setShowHint(false);
     setShowSolution(false);
+    setFeedback("");
     setProblem(parsedResponse.problem);
     setSessionId(parsedResponse.session_id);
     setIsLoading(false);
@@ -196,7 +197,7 @@ export default function Home() {
             </blockquote>
             {!isCorrect && (
               <button
-                hidden={showHint}
+                hidden={showSolution}
                 className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-3 px-4 rounded-lg transition duration-200 ease-in-out transform hover:scale-105"
                 onClick={() => {
                   setShowSolution(true);
