@@ -25,9 +25,7 @@ const MathOption = ({
         {`Select ${title ? title : "an option"}:`}
       </label>
       <select
-        id="difficulty"
         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        defaultValue="easy"
         disabled={isLoading}
         onChange={(e) =>
           propSetter(e.target.value as Difficulty | ArithmeticType)
